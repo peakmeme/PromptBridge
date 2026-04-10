@@ -56,6 +56,16 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 
 ### [2026-04-10]
 
+#### 第五次更新 / Fifth Session
+- **feat**: 在主进程成功引入 `@xenova/transformers`，跑通 `BGE-Small-ZH-V1.5` 本地推理。
+- **feat**: 实现 `EmbeddingService` 单例服务，强制开启 `local_files_only: true` 确保 100% 物理断网运行。
+- **feat**: 编写全流程测试脚本 `test-pipeline.ts`，打通“PDF 解析 -> 语义切片 -> 向量化”完整链路。
+- **fix**: 补全 `onnxruntime-node` 依赖，解决 Node.js 环境下加载 ONNX 模型的后端缺失问题。
+- **feat**: Integrated `@xenova/transformers` in the main process, enabling `BGE-Small-ZH-V1.5` local inference.
+- **feat**: Implemented `EmbeddingService` singleton with `local_files_only: true` to ensure 100% offline execution.
+- **feat**: Created `test-pipeline.ts` to verify the full RAG pipeline (PDF Parsing -> Text Chunking -> Vectorization).
+- **fix**: Added `onnxruntime-node` dependency to resolve the missing backend for ONNX models in Node.js.
+
 #### 第四次更新 / Fourth Session
 - **feat**: 实现大模型本地化装填，选用 `BGE-Small-ZH-V1.5` 模型并完成 24MB 核心资产集成。
 - **feat**: 建立标准的 `assets/models/` 目录结构，实现 100% 本地运行与物理隐私隔离。
