@@ -41,3 +41,7 @@ dist
 
 # TypeScript
 *.tsbuildinfo
+
+# Test files
+test.docx
+test.pdf
