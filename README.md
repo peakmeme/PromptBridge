@@ -27,6 +27,7 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 本地 Embedding 模型加载测试 (完成本地化装填)
 - [x] 全链路自动化流水线打通 (解析 -> 切片 -> 向量化 -> 入库)
 - [x] 前端拖拽上传 UI 与 IPC 实装
+- [x] RAG 检索增强生成链路打通 (搜索 -> 提示词组装 -> OpenAI)
 
 ---
 
@@ -53,12 +54,21 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] Local Embedding model loading test (Completed localization)
 - [x] Full-link automated pipeline integrated (Parse -> Chunk -> Vectorize -> DB)
 - [x] Frontend drag-and-drop UI with IPC implementation
+- [x] RAG retrieval-augmented generation link enabled (Search -> Prompt Assembly -> OpenAI)
 
 ---
 
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第八次更新 / Eighth Session
+- **feat**: 实现 RAG 检索增强生成核心逻辑，支持向量搜索 `search(query)`。
+- **feat**: 编写 `test-qa.ts` 质检脚本，打通“本地检索原文 -> 组装超级提示词 -> 云端裁判 (GPT-4o) 回答”全流程。
+- **feat**: 兼容脱离 Electron 环境运行的数据库初始化逻辑。
+- **feat**: Implemented RAG core logic, supporting vector search `search(query)`.
+- **feat**: Created `test-qa.ts` for quality inspection, completing the flow: "Local Retrieval -> Super Prompt Assembly -> Cloud AI (GPT-4o) Response".
+- **feat**: Compatible database initialization for non-Electron environments.
 
 #### 第七次更新 / Seventh Session
 - **feat**: 实现主进程全自动化处理流水线 `PipelineService`。
