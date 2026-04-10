@@ -24,7 +24,7 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 文档解析层集成 (pdf-parse + mammoth)
 - [x] 文本切片算法实现 (TextChunker)
 - [ ] 本地向量库 LanceDB 集成 (进行中)
-- [ ] 本地 Embedding 模型加载测试 (待开始)
+- [x] 本地 Embedding 模型加载测试 (完成本地化装填)
 
 ---
 
@@ -46,14 +46,23 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] Basic Test UI and "Hello World" verification
 - [x] Git version control and .gitignore environment isolation
 - [x] Document parsing layer integration (pdf-parse + mammoth)
+- [x] Text chunking algorithm implementation (TextChunker)
 - [ ] Local vector database LanceDB integration (In Progress)
-- [ ] Local Embedding model loading test (Pending)
+- [x] Local Embedding model loading test (Completed localization)
 
 ---
 
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第四次更新 / Fourth Session
+- **feat**: 实现大模型本地化装填，选用 `BGE-Small-ZH-V1.5` 模型并完成 24MB 核心资产集成。
+- **feat**: 建立标准的 `assets/models/` 目录结构，实现 100% 本地运行与物理隐私隔离。
+- **chore**: 更新 `.gitignore` 策略，决定将轻量化模型资产直接纳入 Git 仓库，实现克隆即用。
+- **feat**: Implement model localization with `BGE-Small-ZH-V1.5` and integrated 24MB core assets.
+- **feat**: Established standard `assets/models/` structure for 100% local execution and privacy isolation.
+- **chore**: Updated `.gitignore` to include lightweight model assets in the repository for "clone and play" experience.
 
 #### 第三次更新 / Third Session
 - **feat**: 实现文本切片算法 `TextChunker`，支持按中文标点切割，并引入重叠区机制。
