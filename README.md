@@ -25,6 +25,8 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 文本切片算法实现 (TextChunker)
 - [x] 本地向量库 LanceDB 集成 (完成)
 - [x] 本地 Embedding 模型加载测试 (完成本地化装填)
+- [x] 全链路自动化流水线打通 (解析 -> 切片 -> 向量化 -> 入库)
+- [x] 前端拖拽上传 UI 与 IPC 实装
 
 ---
 
@@ -49,12 +51,24 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] Text chunking algorithm implementation (TextChunker)
 - [x] Local vector database LanceDB integration (Completed)
 - [x] Local Embedding model loading test (Completed localization)
+- [x] Full-link automated pipeline integrated (Parse -> Chunk -> Vectorize -> DB)
+- [x] Frontend drag-and-drop UI with IPC implementation
 
 ---
 
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第七次更新 / Seventh Session
+- **feat**: 实现主进程全自动化处理流水线 `PipelineService`。
+- **feat**: 前端实装“虚线拖拽框”UI，支持 PDF 文件拖拽入库。
+- **feat**: 打通 `Renderer -> IPC -> Main Pipeline -> LanceDB` 的全链路闭环。
+- **fix**: 解决 ESM 模块导入冲突，通过动态 `import()` 兼容 `transformers.js` 和 `lancedb`。
+- **feat**: Implemented automated main process pipeline `PipelineService`.
+- **feat**: Added "Dashed Drag-and-Drop Box" UI in the frontend for PDF ingestion.
+- **feat**: Completed the full-link loop: `Renderer -> IPC -> Main Pipeline -> LanceDB`.
+- **fix**: Resolved ESM import conflicts using dynamic `import()` for `transformers.js` and `lancedb`.
 
 #### 第六次更新 / Sixth Session
 - **feat**: 集成无服务器向量数据库 `@lancedb/lancedb`。

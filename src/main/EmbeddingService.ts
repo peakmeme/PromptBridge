@@ -1,14 +1,8 @@
-import { pipeline, env } from '@xenova/transformers';
 import path from 'path';
-
-// 配置 transformers.js 使用本地模型，严禁联网
-env.localModelPath = path.join(process.cwd(), 'assets/models');
-env.allowRemoteModels = false;
-env.allowLocalModels = true;
-env.useBrowserCache = false;
 
 export class EmbeddingService {
   private extractor: any = null;
+  private pipelineFunc: any = null;
   private readonly modelId = 'Xenova/bge-small-zh-v1.5';
 
   async init() {
@@ -16,7 +10,18 @@ export class EmbeddingService {
 
     try {
       console.log(`[EmbeddingService] 正在从本地加载模型: ${this.modelId}`);
-      this.extractor = await pipeline('feature-extraction', this.modelId, {
+      
+      // 动态导入 ESM 模块
+      const { pipeline, env } = await import('@xenova/transformers');
+      this.pipelineFunc = pipeline;
+
+      // 配置 transformers.js 使用本地模型，严禁联网
+      env.localModelPath = path.join(process.cwd(), 'assets/models');
+      env.allowRemoteModels = false;
+      env.allowLocalModels = true;
+      env.useBrowserCache = false;
+
+      this.extractor = await this.pipelineFunc('feature-extraction', this.modelId, {
         local_files_only: true,
       });
       console.log('[EmbeddingService] 模型加载成功');

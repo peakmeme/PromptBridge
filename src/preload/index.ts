@@ -3,7 +3,8 @@ import { exposeElectronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  ping: () => ipcRenderer.send('ping')
+  ping: () => ipcRenderer.send('ping'),
+  processFile: (filePath: string) => ipcRenderer.invoke('process-file', filePath)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

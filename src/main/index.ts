@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { PipelineService } from './PipelineService'
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,6 +52,16 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('Hello World'))
+
+  // 文件处理全流程流水线处理器
+  ipcMain.handle('process-file', async (_, filePath: string) => {
+    try {
+      return await PipelineService.processFile(filePath)
+    } catch (error) {
+      console.error('IPC process-file error:', error)
+      throw error
+    }
+  })
 
   createWindow()
 

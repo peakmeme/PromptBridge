@@ -4,7 +4,8 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      ping: () => void
+      ping: () => void;
+      processFile: (filePath: string) => Promise<boolean>;
     }
   }
 }

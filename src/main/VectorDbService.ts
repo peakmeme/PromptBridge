@@ -1,4 +1,3 @@
-import * as lancedb from '@lancedb/lancedb';
 import path from 'path';
 import fs from 'fs';
 import { app } from 'electron';
@@ -12,7 +11,8 @@ export interface DocRecord {
 }
 
 export class VectorDbService {
-  private db: lancedb.Connection | null = null;
+  private db: any = null;
+  private lancedb: any = null;
   private readonly tableName = 'documents';
   private dbPath: string = '';
 
@@ -30,18 +30,18 @@ export class VectorDbService {
     if (this.db) return;
     
     console.log(`[VectorDbService] 正在初始化数据库: ${this.dbPath}`);
-    this.db = await lancedb.connect(this.dbPath);
+    // 动态导入 ESM 模块
+    this.lancedb = await import('@lancedb/lancedb');
+    this.db = await this.lancedb.connect(this.dbPath);
   }
 
   async getTable() {
     await this.init();
-    const tableNames = await this.db!.tableNames();
+    const tableNames = await this.db.tableNames();
     
     if (tableNames.includes(this.tableName)) {
-      return await this.db!.openTable(this.tableName);
+      return await this.db.openTable(this.tableName);
     } else {
-      // 第一次建表，LanceDB 会根据第一条数据自动推断 Schema
-      // 也可以显式定义，这里我们先通过空数据或示例数据初始化
       console.log(`[VectorDbService] 创建新表: ${this.tableName}`);
       return null;
     }
@@ -49,12 +49,12 @@ export class VectorDbService {
 
   async addDocuments(records: DocRecord[]) {
     await this.init();
-    const tableNames = await this.db!.tableNames();
+    const tableNames = await this.db.tableNames();
     
     if (!tableNames.includes(this.tableName)) {
-      await this.db!.createTable(this.tableName, records);
+      await this.db.createTable(this.tableName, records);
     } else {
-      const table = await this.db!.openTable(this.tableName);
+      const table = await this.db.openTable(this.tableName);
       await table.add(records);
     }
   }
