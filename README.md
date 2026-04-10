@@ -22,6 +22,7 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 基础测试 UI 与 “Hello World” 联通验证
 - [x] Git 版本管理与 .gitignore 环境隔离配置
 - [x] 文档解析层集成 (pdf-parse + mammoth)
+- [x] 文本切片算法实现 (TextChunker)
 - [ ] 本地向量库 LanceDB 集成 (进行中)
 - [ ] 本地 Embedding 模型加载测试 (待开始)
 
@@ -53,6 +54,12 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第三次更新 / Third Session
+- **feat**: 实现文本切片算法 `TextChunker`，支持按中文标点切割，并引入重叠区机制。
+- **feat**: 编写 `test-chunker.ts` 测试脚本，验证切片算法的重叠区效果。
+- **feat**: Implement text chunking algorithm `TextChunker` with Chinese punctuation-based splitting and overlap mechanism.
+- **feat**: Write `test-chunker.ts` test script to verify the overlap effect of the chunking algorithm.
 
 #### 第二次更新 / Second Session
 - **feat**: 集成文档解析层，引入 `pdf-parse` 和 `mammoth` 支持 PDF/Word 文本提取。
