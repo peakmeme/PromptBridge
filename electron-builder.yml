@@ -1,0 +1,24 @@
+# See https://www.electron.build/configuration/configuration
+appId: com.electron.peakmeme
+productName: peakmeme
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**/*
+  - resources/**/*
+  - src/renderer/index.html
+extraResources:
+  - resources/**
+mac:
+  target:
+    - dmgs
+  icon: resources/icon.png
+win:
+  target:
+    - nsis
+  icon: resources/icon.png
+linux:
+  target:
+    - AppImage
+  icon: resources/icon.png
