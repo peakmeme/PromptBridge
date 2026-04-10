@@ -2,7 +2,7 @@ import path from 'path';
 import { DocParser } from './src/main/DocParser';
 
 async function main() {
-  const testFilePath = path.join(__dirname, 'test.pdf');
+  const testFilePath = path.join(process.cwd(), 'test.pdf');
   
   console.log(`--- [测试开始] 正在读取: ${testFilePath} ---`);
   

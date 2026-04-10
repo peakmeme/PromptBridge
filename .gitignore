@@ -45,6 +45,3 @@ dist
 # Test files
 test.docx
 test.pdf
-
-# Models
-assets/models/
