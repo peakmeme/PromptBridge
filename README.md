@@ -23,7 +23,7 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] Git 版本管理与 .gitignore 环境隔离配置
 - [x] 文档解析层集成 (pdf-parse + mammoth)
 - [x] 文本切片算法实现 (TextChunker)
-- [ ] 本地向量库 LanceDB 集成 (进行中)
+- [x] 本地向量库 LanceDB 集成 (完成)
 - [x] 本地 Embedding 模型加载测试 (完成本地化装填)
 
 ---
@@ -47,7 +47,7 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] Git version control and .gitignore environment isolation
 - [x] Document parsing layer integration (pdf-parse + mammoth)
 - [x] Text chunking algorithm implementation (TextChunker)
-- [ ] Local vector database LanceDB integration (In Progress)
+- [x] Local vector database LanceDB integration (Completed)
 - [x] Local Embedding model loading test (Completed localization)
 
 ---
@@ -55,6 +55,16 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第六次更新 / Sixth Session
+- **feat**: 集成无服务器向量数据库 `@lancedb/lancedb`。
+- **feat**: 实现 `VectorDbService`，支持在 Electron `userData` 目录下自动初始化数据库。
+- **feat**: 规范化数据库字段：`id, text, vector, source_file`。
+- **feat**: 编写 `test-lancedb.ts` 测试脚本，验证向量数据入库与 `COUNT(*)` 查询。
+- **feat**: Integrated serverless vector database `@lancedb/lancedb`.
+- **feat**: Implemented `VectorDbService` for automatic DB initialization in Electron's `userData` directory.
+- **feat**: Standardized database fields: `id, text, vector, source_file`.
+- **feat**: Created `test-lancedb.ts` to verify vector data insertion and `COUNT(*)` queries.
 
 #### 第五次更新 / Fifth Session
 - **feat**: 在主进程成功引入 `@xenova/transformers`，跑通 `BGE-Small-ZH-V1.5` 本地推理。
