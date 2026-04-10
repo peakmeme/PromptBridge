@@ -1,8 +1,48 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, globalShortcut, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { PipelineService } from './PipelineService'
+import { KnowledgeService } from './KnowledgeService'
+
+let searchWindow: BrowserWindow | null = null
+
+function createSearchWindow(): void {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  const windowWidth = 600
+  const windowHeight = 450 // 调高窗口以显示结果
+
+  searchWindow = new BrowserWindow({
+    width: windowWidth,
+    height: windowHeight,
+    x: Math.floor((width - windowWidth) / 2),
+    y: Math.floor((height - windowHeight) / 2),
+    show: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    resizable: false,
+    hasShadow: false,
+    webPreferences: {
+      preload: join(__dirname, '../preload/index.js'),
+      sandbox: false,
+      backgroundThrottling: false
+    }
+  })
+
+  searchWindow.on('blur', () => {
+    console.log('窗口已隐藏')
+    searchWindow?.hide()
+  })
+
+  // HMR for renderer base on electron-vite cli.
+  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+    searchWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}?mode=search`)
+  } else {
+    searchWindow.loadFile(join(__dirname, '../renderer/index.html'), { query: { mode: 'search' } })
+  }
+}
 
 function createWindow(): void {
   // Create the browser window.
@@ -63,7 +103,37 @@ app.whenReady().then(() => {
     }
   })
 
+  // 隐藏搜索窗口的 IPC
+  ipcMain.on('hide-search-window', () => {
+    searchWindow?.hide()
+  })
+
+  // 搜索知识库的 IPC
+  ipcMain.handle('search-knowledge', async (_, query: string) => {
+    try {
+      return await KnowledgeService.searchKnowledge(query)
+    } catch (error) {
+      console.error('IPC search-knowledge error:', error)
+      throw error
+    }
+  })
+
   createWindow()
+  createSearchWindow()
+
+  // 注册系统全局快捷键 Option+Space
+  const ret = globalShortcut.register('Option+Space', () => {
+    if (searchWindow?.isVisible()) {
+      searchWindow.hide()
+    } else {
+      searchWindow?.show()
+      searchWindow?.focus()
+    }
+  })
+
+  if (!ret) {
+    console.error('[Main] 注册快捷键失败')
+  }
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

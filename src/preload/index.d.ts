@@ -6,6 +6,8 @@ declare global {
     api: {
       ping: () => void;
       processFile: (filePath: string) => Promise<boolean>;
+      hideSearchWindow: () => void;
+      searchKnowledge: (query: string) => Promise<string>;
     }
   }
 }

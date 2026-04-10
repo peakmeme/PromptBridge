@@ -4,7 +4,9 @@ import { exposeElectronAPI } from '@electron-toolkit/preload'
 // Custom APIs for renderer
 const api = {
   ping: () => ipcRenderer.send('ping'),
-  processFile: (filePath: string) => ipcRenderer.invoke('process-file', filePath)
+  processFile: (filePath: string) => ipcRenderer.invoke('process-file', filePath),
+  hideSearchWindow: () => ipcRenderer.send('hide-search-window'),
+  searchKnowledge: (query: string) => ipcRenderer.invoke('search-knowledge', query)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

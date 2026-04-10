@@ -29,6 +29,8 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 前端拖拽上传 UI 与 IPC 实装
 - [x] RAG 语义搜索增强 (KnowledgeService 实装)
 - [x] 靶标数据精准度测试 (Day 7 大考通过)
+- [x] 全局快捷键唤起 (Option+Space)
+- [x] 透明悬浮搜索框 (系统级置顶交互)
 
 ---
 
@@ -57,12 +59,24 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] Frontend drag-and-drop UI with IPC implementation
 - [x] RAG Semantic Search Enhancement (KnowledgeService)
 - [x] Precision Testing with Target Data (Day 7 Challenge)
+- [x] Global Hotkey Support (Option+Space)
+- [x] Transparent Floating Search Window (System-wide Topmost Interaction)
 
 ---
 
 ## 📝 更新日志 / Changelog
 
-### [2026-04-10]
+### [2026-04-11]
+
+#### 第九次更新 / Ninth Session
+- **feat**: 实现全局快捷键 `Option+Space` 唤起悬浮搜索框，调用 Electron 系统底层能力。
+- **feat**: 实装“透明悬浮窗”UI，支持无边框、背景透明、永远置顶交互。
+- **feat**: 打通悬浮窗与主进程的 RAG 交互链路，支持输入问题按回车直接检索。
+- **test**: 在悬浮窗中添加只读 `<textarea>` 实时展示组装好的“超级提示词”，通过 Day 7 精准度验证。
+- **feat**: Implemented global hotkey `Option+Space` for search window, leveraging Electron's low-level system APIs.
+- **feat**: Added transparent floating window UI with borderless, background transparency, and always-on-top behavior.
+- **feat**: Completed RAG interaction loop from search window to main process via IPC.
+- **test**: Added read-only `<textarea>` in search window to display assembled "Super Prompts" for precision verification.
 
 #### 第八次更新 / Eighth Session
 - **feat**: 实现 `KnowledgeService`，打通 RAG（检索增强生成）闭环。
