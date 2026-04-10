@@ -53,10 +53,14 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+
+#### 第二次更新 / Second Session
 - **feat**: 集成文档解析层，引入 `pdf-parse` 和 `mammoth` 支持 PDF/Word 文本提取。
 - **feat**: 实现 `DocParser` 类，支持纯本地文件解析与文本清洗（去空格/空行）。
 - **feat**: Integrate document parsing layer with `pdf-parse` and `mammoth` for PDF/Word text extraction.
 - **feat**: Implement `DocParser` class for local file parsing and text cleaning.
+
+#### 第一次更新 / First Session
 - **feat**: 初始化项目结构，配置 electron-vite + React + TypeScript。
 - **feat**: 建立 IPC 通信，实现前端按钮触发主进程控制台打印。
 - **chore**: 配置 Git 忽略规则，只上传源码，剔除 node_modules 等中间文件。
