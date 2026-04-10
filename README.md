@@ -21,6 +21,7 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 主进程与渲染进程 IPC 通信机制建立
 - [x] 基础测试 UI 与 “Hello World” 联通验证
 - [x] Git 版本管理与 .gitignore 环境隔离配置
+- [x] 文档解析层集成 (pdf-parse + mammoth)
 - [ ] 本地向量库 LanceDB 集成 (进行中)
 - [ ] 本地 Embedding 模型加载测试 (待开始)
 
@@ -43,6 +44,7 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - [x] IPC communication mechanism between Main and Renderer processes
 - [x] Basic Test UI and "Hello World" verification
 - [x] Git version control and .gitignore environment isolation
+- [x] Document parsing layer integration (pdf-parse + mammoth)
 - [ ] Local vector database LanceDB integration (In Progress)
 - [ ] Local Embedding model loading test (Pending)
 
@@ -51,6 +53,10 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 ## 📝 更新日志 / Changelog
 
 ### [2026-04-10]
+- **feat**: 集成文档解析层，引入 `pdf-parse` 和 `mammoth` 支持 PDF/Word 文本提取。
+- **feat**: 实现 `DocParser` 类，支持纯本地文件解析与文本清洗（去空格/空行）。
+- **feat**: Integrate document parsing layer with `pdf-parse` and `mammoth` for PDF/Word text extraction.
+- **feat**: Implement `DocParser` class for local file parsing and text cleaning.
 - **feat**: 初始化项目结构，配置 electron-vite + React + TypeScript。
 - **feat**: 建立 IPC 通信，实现前端按钮触发主进程控制台打印。
 - **chore**: 配置 Git 忽略规则，只上传源码，剔除 node_modules 等中间文件。
