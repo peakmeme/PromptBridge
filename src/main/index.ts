@@ -112,8 +112,53 @@ app.whenReady().then(() => {
   ipcMain.handle('search-knowledge', async (_, query: string) => {
     try {
       return await KnowledgeService.searchKnowledge(query)
-    } catch (error) {
+    } catch (error: any) {
       console.error('IPC search-knowledge error:', error)
+      // 抛出错误给前端
+      throw error.message || '搜索失败'
+    }
+  })
+
+  // 清空知识库的 IPC
+  ipcMain.handle('clear-knowledge', async () => {
+    try {
+      const { vectorDbService } = await import('./VectorDbService')
+      return await vectorDbService.clearDatabase()
+    } catch (error) {
+      console.error('IPC clear-knowledge error:', error)
+      throw error
+    }
+  })
+
+  // 获取文件列表的 IPC
+  ipcMain.handle('get-indexed-files', async () => {
+    try {
+      const { vectorDbService } = await import('./VectorDbService')
+      return await vectorDbService.getFiles()
+    } catch (error) {
+      console.error('IPC get-indexed-files error:', error)
+      throw error
+    }
+  })
+
+  // 删除特定文件的 IPC
+  ipcMain.handle('delete-indexed-files', async (_, filePaths: string[]) => {
+    try {
+      const { vectorDbService } = await import('./VectorDbService')
+      return await vectorDbService.deleteFiles(filePaths)
+    } catch (error) {
+      console.error('IPC delete-indexed-files error:', error)
+      throw error
+    }
+  })
+
+  // 获取数据库路径的 IPC
+  ipcMain.handle('get-db-path', async () => {
+    try {
+      const { vectorDbService } = await import('./VectorDbService')
+      return vectorDbService.getDbPath()
+    } catch (error) {
+      console.error('IPC get-db-path error:', error)
       throw error
     }
   })

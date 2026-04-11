@@ -8,6 +8,10 @@ declare global {
       processFile: (filePath: string) => Promise<boolean>;
       hideSearchWindow: () => void;
       searchKnowledge: (query: string) => Promise<string>;
+      clearKnowledge: () => Promise<boolean>;
+      getIndexedFiles: () => Promise<string[]>;
+      deleteIndexedFiles: (filePaths: string[]) => Promise<boolean>;
+      getDbPath: () => Promise<string>;
     }
   }
 }

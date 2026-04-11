@@ -39,7 +39,7 @@ export class PipelineService {
           id: `${fileName}_${Date.now()}_${i}`,
           text: text,
           vector: Array.from(vector), // LanceDB 需要普通数组
-          source_file: fileName
+          source_file: filePath // 存储完整路径
         });
 
         if ((i + 1) % 5 === 0 || i === chunks.length - 1) {
@@ -50,6 +50,10 @@ export class PipelineService {
       // 4. 数据库入库阶段
       console.log(`[Pipeline] 阶段 4/4: 正在存入本地向量数据库...`);
       await vectorDbService.addDocuments(records);
+      
+      // 强制等 100ms 确认 LanceDB 刷盘
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       const totalRows = await vectorDbService.count();
       console.log(`[Pipeline] 入库成功！当前数据库总行数: ${totalRows}`);
 

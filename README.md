@@ -78,6 +78,22 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - **feat**: Completed RAG interaction loop from search window to main process via IPC.
 - **test**: Added read-only `<textarea>` in search window to display assembled "Super Prompts" for precision verification.
 
+#### 第十次更新 / Tenth Session
+- **feat**: 完成知识库管理 UI，支持查看已索引文件列表、单选/全选和批量删除。
+- **feat**: 增加一键清空本地知识库能力，对应物理删除 LanceDB 目录并自动重建。
+- **feat**: 前端状态文案与复制提示优化，入库、删除、复制等行为均有即时反馈。
+- **feat**: 将数据库存储路径暴露给前端，便于调试和观察本地向量库位置。
+- **feat**: 完善全局搜索浮窗的自动隐藏策略（Idle/清空/失焦），提升防误触体验。
+- **fix**: 强化 VectorDbService 对表存在性、空表和异常场景的处理与日志记录。
+- **chore**: 统一 IPC 层知识库相关接口（搜索、清空、列出文件、删除文件、获取 DB 路径）。
+- **feat**: Completed knowledge base management UI with indexed file listing, single/multi-selection, and batch deletion.
+- **feat**: Added one-click local knowledge base reset by physically removing the LanceDB directory and recreating it.
+- **feat**: Improved frontend status messages and copy feedback for ingestion, deletion, and clipboard operations.
+- **feat**: Exposed database path to the renderer to simplify debugging and inspection of the local vector store.
+- **feat**: Refined global search window auto-hide behavior (idle/empty/blur) for a safer and smoother UX.
+- **fix**: Hardened VectorDbService logic and logging around table existence, empty DB, and failure cases.
+- **chore**: Consolidated knowledge-related IPC handlers (search, clear, list files, delete files, get DB path).
+
 #### 第八次更新 / Eighth Session
 - **feat**: 实现 `KnowledgeService`，打通 RAG（检索增强生成）闭环。
 - **feat**: 在 `VectorDbService` 中新增向量搜索接口，支持 Top-K 检索。
