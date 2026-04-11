@@ -6,17 +6,35 @@
 
 ## 中文
 
-### 🚀 项目定位
+### 项目定位
 **“本地前置降噪，云端一键开火”** —— 这是一个面向高净值专业人群的本地隐私记忆中枢与 AI 上下文桥接器。
 PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利用顶级云端大模型时面临的数据隐私与合规红线。通过纯本地的语义检索技术，将海量私密文档精准组装为高纯度“超级提示词”，实现“算力与隐私的完美解耦”。
 
-### 🛠️ 核心架构
-- **Electron + React + TypeScript**: 跨平台桌面级稳定性保障。
-- **LanceDB (Node.js)**: 像 SQLite 一样简单的本地无服务器向量库。
-- **Transformers.js**: 纯本地运行的 Embedding 模型，确保 100% 数据物理隔离。
-- **智能剪贴板桥接**: 无需 API，通过劫持剪贴板无缝唤起网页端大模型（ChatGPT/Claude 等）。
+### 核心架构
+- **Electron + React + TypeScript**：跨平台桌面级稳定性保障。
+- **LanceDB (Node.js)**：像 SQLite 一样简单的本地无服务器向量库。
+- **Transformers.js**：纯本地运行的 Embedding 模型，确保 100% 数据物理隔离。
+- **智能剪贴板桥接**：无需 API，通过劫持剪贴板无缝唤起网页端大模型（ChatGPT/Claude 等）。
 
-### 📅 当前进度
+### 当前能力
+- 本地文档解析、切片、向量化、入库全链路自动化
+- 支持拖拽导入文档并管理已索引文件
+- 支持 RAG 语义搜索与结果复制
+- 支持全局快捷键 `Option+Space` 唤起搜索浮窗
+- 主工作台与搜索浮窗均已升级为 Liquid Glass 风格界面
+- 支持清空知识库、删除单个或多个索引文件、复制数据库路径
+- 已补齐 ESLint，当前 `npm run lint` 与 `npm run typecheck` 均可通过
+
+### 开发命令
+```bash
+npm install
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+```
+
+### 当前进度
 - [x] 项目基础架构初始化 (Electron + Vite + React + TS)
 - [x] 主进程与渲染进程 IPC 通信机制建立
 - [x] 基础测试 UI 与 “Hello World” 联通验证
@@ -31,52 +49,80 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 - [x] 靶标数据精准度测试 (Day 7 大考通过)
 - [x] 全局快捷键唤起 (Option+Space)
 - [x] 透明悬浮搜索框 (系统级置顶交互)
+- [x] 知识库管理 UI（查看、选择、删除、清空、复制路径）
+- [x] 主页面与搜索页面 Liquid Glass 风格改造
+- [x] ESLint 配置补齐并通过 lint / typecheck
 
 ---
 
 ## English
 
-### 🚀 Project Positioning
+### Project Positioning
 **"Local Pre-filtering, Cloud-side Execution"** —— A local privacy memory hub and AI context bridge for high-net-worth professionals.
 PromptBridge addresses data privacy and compliance concerns in professional fields (e.g., legal, auditing, B2B sales) when using top-tier cloud-based LLMs. It utilizes local semantic retrieval to assemble massive private documents into high-purity "Super Prompts," achieving "perfect decoupling of compute power and privacy."
 
-### 🛠️ Core Architecture
+### Core Architecture
 - **Electron + React + TypeScript**: Cross-platform desktop stability.
 - **LanceDB (Node.js)**: A serverless local vector database as simple as SQLite.
-- **Transformers.js**: Purely local Embedding models, ensuring 100% physical data isolation.
+- **Transformers.js**: Purely local embedding models, ensuring 100% physical data isolation.
 - **Intelligent Clipboard Bridge**: No API required; seamlessly invokes web-based LLMs (ChatGPT/Claude, etc.) via clipboard hijacking.
 
-### 📅 Current Progress
+### Current Capabilities
+- End-to-end local pipeline for parsing, chunking, vectorizing, and storing documents
+- Drag-and-drop ingestion with indexed file management
+- RAG semantic search with result copying
+- Global hotkey `Option+Space` for launching the floating search window
+- Liquid Glass styling applied to both the main workspace and search overlay
+- Knowledge base reset, single/batch deletion, and database path copy support
+- ESLint is now configured and both `npm run lint` and `npm run typecheck` pass
+
+### Development Commands
+```bash
+npm install
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+```
+
+### Current Progress
 - [x] Project scaffolding initialization (Electron + Vite + React + TS)
 - [x] IPC communication mechanism between Main and Renderer processes
-- [x] Basic Test UI and "Hello World" verification
+- [x] Basic test UI and "Hello World" verification
 - [x] Git version control and .gitignore environment isolation
 - [x] Document parsing layer integration (pdf-parse + mammoth)
 - [x] Text chunking algorithm implementation (TextChunker)
 - [x] Local vector database LanceDB integration (Completed)
-- [x] Local Embedding model loading test (Completed localization)
+- [x] Local embedding model loading test (Completed localization)
 - [x] Full-link automated pipeline integrated (Parse -> Chunk -> Vectorize -> DB)
 - [x] Frontend drag-and-drop UI with IPC implementation
-- [x] RAG Semantic Search Enhancement (KnowledgeService)
-- [x] Precision Testing with Target Data (Day 7 Challenge)
-- [x] Global Hotkey Support (Option+Space)
-- [x] Transparent Floating Search Window (System-wide Topmost Interaction)
+- [x] RAG semantic search enhancement (KnowledgeService)
+- [x] Precision testing with target data (Day 7 challenge)
+- [x] Global hotkey support (Option+Space)
+- [x] Transparent floating search window (system-wide topmost interaction)
+- [x] Knowledge base management UI (list, select, delete, clear, copy DB path)
+- [x] Liquid Glass redesign for the main page and search page
+- [x] ESLint setup completed with passing lint / typecheck
 
 ---
 
-## 📝 更新日志 / Changelog
+## 更新日志 / Changelog
+
+### [2026-04-12]
+
+#### 第十一次更新 / Eleventh Session
+- **feat**: 完成主页面与搜索页面的 Liquid Glass 风格重构，统一玻璃拟态层次、模糊、半透明渐变和状态反馈体验。
+- **feat**: 搜索浮窗支持更柔和的低透明度输入区与结果卡片，优化悬浮搜索的轻量感。
+- **feat**: 增强主工作台知识库管理体验，保留拖拽导入、文件选择、批量删除、清空知识库、复制数据库路径等能力。
+- **chore**: 新增 ESLint Flat Config 并补齐相关依赖，使 `npm run lint` 与 `npm run typecheck` 均可通过。
+- **fix**: 新增 `*?asset` 类型声明，修复 Electron 主进程图标资源导入的 TypeScript 校验问题。
+- **feat**: Rebuilt the main page and search page with a Liquid Glass UI using layered blur, translucency, and softer system-like feedback.
+- **feat**: Tuned the floating search UI with lower-opacity input and result cards for a lighter overlay feel.
+- **feat**: Preserved and refined workspace capabilities including drag-and-drop ingestion, multi-file selection, batch deletion, clearing the knowledge base, and copying the DB path.
+- **chore**: Added an ESLint flat config with required dependencies so both `npm run lint` and `npm run typecheck` pass.
+- **fix**: Added a `*?asset` module declaration to fix TypeScript validation for Electron icon asset imports.
 
 ### [2026-04-11]
-
-#### 第九次更新 / Ninth Session
-- **feat**: 实现全局快捷键 `Option+Space` 唤起悬浮搜索框，调用 Electron 系统底层能力。
-- **feat**: 实装“透明悬浮窗”UI，支持无边框、背景透明、永远置顶交互。
-- **feat**: 打通悬浮窗与主进程的 RAG 交互链路，支持输入问题按回车直接检索。
-- **test**: 在悬浮窗中添加只读 `<textarea>` 实时展示组装好的“超级提示词”，通过 Day 7 精准度验证。
-- **feat**: Implemented global hotkey `Option+Space` for search window, leveraging Electron's low-level system APIs.
-- **feat**: Added transparent floating window UI with borderless, background transparency, and always-on-top behavior.
-- **feat**: Completed RAG interaction loop from search window to main process via IPC.
-- **test**: Added read-only `<textarea>` in search window to display assembled "Super Prompts" for precision verification.
 
 #### 第十次更新 / Tenth Session
 - **feat**: 完成知识库管理 UI，支持查看已索引文件列表、单选/全选和批量删除。
@@ -93,6 +139,16 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 - **feat**: Refined global search window auto-hide behavior (idle/empty/blur) for a safer and smoother UX.
 - **fix**: Hardened VectorDbService logic and logging around table existence, empty DB, and failure cases.
 - **chore**: Consolidated knowledge-related IPC handlers (search, clear, list files, delete files, get DB path).
+
+#### 第九次更新 / Ninth Session
+- **feat**: 实现全局快捷键 `Option+Space` 唤起悬浮搜索框，调用 Electron 系统底层能力。
+- **feat**: 实装“透明悬浮窗”UI，支持无边框、背景透明、永远置顶交互。
+- **feat**: 打通悬浮窗与主进程的 RAG 交互链路，支持输入问题按回车直接检索。
+- **test**: 在悬浮窗中添加只读 `<textarea>` 实时展示组装好的“超级提示词”，通过 Day 7 精准度验证。
+- **feat**: Implemented global hotkey `Option+Space` for search window, leveraging Electron's low-level system APIs.
+- **feat**: Added transparent floating window UI with borderless, background transparency, and always-on-top behavior.
+- **feat**: Completed RAG interaction loop from search window to main process via IPC.
+- **test**: Added read-only `<textarea>` in search window to display assembled "Super Prompts" for precision verification.
 
 #### 第八次更新 / Eighth Session
 - **feat**: 实现 `KnowledgeService`，打通 RAG（检索增强生成）闭环。
