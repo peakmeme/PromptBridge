@@ -9,8 +9,8 @@
 - 安装包：`peakmeme-1.0.0-arm64.dmg`
 
 ### 立即下载
-- 下载文件：[`peakmeme-1.0.0-arm64.dmg`](./dist/peakmeme-1.0.0-arm64.dmg)
-- 下载说明：点击上方文件名即可直接下载当前构建产物
+- 下载文件：[`peakmeme-1.0.0-arm64.dmg`](https://github.com/peakmeme/PromptBridge/releases/download/v1.0.0/peakmeme-1.0.0-arm64.dmg)
+- 下载说明：点击上方文件名即可直接下载 GitHub Release 中的正式安装包
 - 安装方式：下载后打开 dmg，将 `peakmeme.app` 拖入 Applications
 
 ### 本次更新摘要
@@ -32,7 +32,7 @@ PromptBridge 是一个本地隐私记忆中枢与 AI 上下文桥接器。
 - 修复打包版缺失 `apache-arrow` 依赖的问题
 
 ### 安装说明
-1. 下载 [`peakmeme-1.0.0-arm64.dmg`](./dist/peakmeme-1.0.0-arm64.dmg)
+1. 下载 [`peakmeme-1.0.0-arm64.dmg`](https://github.com/peakmeme/PromptBridge/releases/download/v1.0.0/peakmeme-1.0.0-arm64.dmg)
 2. 打开 dmg 后将 `peakmeme.app` 拖入 Applications
 3. 如果系统提示应用未签名，请在“系统设置 -> 隐私与安全性”中手动允许打开
 4. 如本机已安装旧版本，请先替换 `/Applications/peakmeme.app` 后再测试
@@ -53,8 +53,8 @@ PromptBridge 是一个本地隐私记忆中枢与 AI 上下文桥接器。
 - Installer: `peakmeme-1.0.0-arm64.dmg`
 
 ### Download Now
-- Download: [peakmeme-1.0.0-arm64.dmg](./dist/peakmeme-1.0.0-arm64.dmg)
-- Download Note: Click the file name above to download the current build artifact directly
+- Download: [peakmeme-1.0.0-arm64.dmg](https://github.com/peakmeme/PromptBridge/releases/download/v1.0.0/peakmeme-1.0.0-arm64.dmg)
+- Download Note: Click the file name above to download the official installer from GitHub Releases
 - Install: Open the dmg after downloading and drag `peakmeme.app` into Applications
 
 ### Update Summary
@@ -76,7 +76,7 @@ It lets users drag local documents into the app, automatically parse, chunk, vec
 - Fix for the packaged `apache-arrow` runtime dependency issue
 
 ### Installation
-1. Download [peakmeme-1.0.0-arm64.dmg](./dist/peakmeme-1.0.0-arm64.dmg)
+1. Download [peakmeme-1.0.0-arm64.dmg](https://github.com/peakmeme/PromptBridge/releases/download/v1.0.0/peakmeme-1.0.0-arm64.dmg)
 2. Open the dmg and drag `peakmeme.app` into Applications
 3. If macOS warns that the app is unsigned, allow it manually in "System Settings -> Privacy & Security"
 4. If an older build is already installed, replace `/Applications/peakmeme.app` before testing
