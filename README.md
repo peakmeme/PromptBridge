@@ -19,11 +19,19 @@ PromptBridge 旨在解决专业领域（如法律、审计、B2B 销售）在利
 ### 当前能力
 - 本地文档解析、切片、向量化、入库全链路自动化
 - 支持拖拽导入文档并管理已索引文件
+- 增强拖拽路径读取与导入失败提示，降低“解析失败”的误报
 - 支持 RAG 语义搜索与结果复制
+- 搜索失败时尽量展示真实错误，并对空知识库给出明确提示
 - 支持全局快捷键 `Option+Space` 唤起搜索浮窗
 - 主工作台与搜索浮窗均已升级为 Liquid Glass 风格界面
 - 支持清空知识库、删除单个或多个索引文件、复制数据库路径
+- 已修复 LanceDB 打包后缺失 `apache-arrow` 的运行期依赖问题
 - 已补齐 ESLint，当前 `npm run lint` 与 `npm run typecheck` 均可通过
+
+### 下载体验
+- 当前已可构建 macOS Apple Silicon 版本 `.dmg`
+- 最新下载入口建议放在独立发布页，便于用户直接获取安装包
+- 发布说明页请查看仓库中的 [release.md](./release.md)
 
 ### 开发命令
 ```bash
@@ -32,6 +40,7 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run build:mac
 ```
 
 ### 当前进度
@@ -51,6 +60,8 @@ npm run build
 - [x] 透明悬浮搜索框 (系统级置顶交互)
 - [x] 知识库管理 UI（查看、选择、删除、清空、复制路径）
 - [x] 主页面与搜索页面 Liquid Glass 风格改造
+- [x] 拖拽导入稳定性修复与搜索错误提示优化
+- [x] LanceDB 打包依赖补齐并重新生成 macOS dmg
 - [x] ESLint 配置补齐并通过 lint / typecheck
 
 ---
@@ -70,11 +81,19 @@ PromptBridge addresses data privacy and compliance concerns in professional fiel
 ### Current Capabilities
 - End-to-end local pipeline for parsing, chunking, vectorizing, and storing documents
 - Drag-and-drop ingestion with indexed file management
+- Improved dropped-file path resolution and clearer ingestion failure feedback to reduce false "parse failed" cases
 - RAG semantic search with result copying
+- Search now surfaces more specific errors and gives a clearer hint when the knowledge base is empty
 - Global hotkey `Option+Space` for launching the floating search window
 - Liquid Glass styling applied to both the main workspace and search overlay
 - Knowledge base reset, single/batch deletion, and database path copy support
+- Fixed the packaged LanceDB runtime dependency issue for `apache-arrow`
 - ESLint is now configured and both `npm run lint` and `npm run typecheck` pass
+
+### Download Experience
+- A macOS Apple Silicon `.dmg` build is currently available
+- The latest download entry is intended to live on a dedicated release page for direct user access
+- See [release.md](./release.md) in the repository for the release page
 
 ### Development Commands
 ```bash
@@ -83,6 +102,7 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run build:mac
 ```
 
 ### Current Progress
@@ -102,6 +122,8 @@ npm run build
 - [x] Transparent floating search window (system-wide topmost interaction)
 - [x] Knowledge base management UI (list, select, delete, clear, copy DB path)
 - [x] Liquid Glass redesign for the main page and search page
+- [x] Drag-and-drop reliability fix and clearer search error handling
+- [x] LanceDB packaging dependency fix and regenerated macOS dmg
 - [x] ESLint setup completed with passing lint / typecheck
 
 ---
@@ -109,6 +131,24 @@ npm run build
 ## 更新日志 / Changelog
 
 ### [2026-04-12]
+
+#### 第十三次更新 / Thirteenth Session
+- **fix**: 将 `apache-arrow` 显式加入项目 `dependencies`，修复 LanceDB 在 macOS dmg 安装包中的运行时依赖缺失问题。
+- **build**: 重新执行 `npm run lint`、`npm run typecheck` 与 `npm run build:mac`，生成新的 Apple Silicon dmg 安装包。
+- **docs**: 更新 README 下载说明，并新增独立发布页 `release.md` 作为用户下载入口。
+- **fix**: Added `apache-arrow` as a direct dependency to fix the packaged LanceDB runtime module resolution failure on macOS.
+- **build**: Re-ran `npm run lint`, `npm run typecheck`, and `npm run build:mac` to generate a refreshed Apple Silicon dmg build.
+- **docs**: Updated the README download guidance and added a dedicated `release.md` page as the direct download entry.
+
+#### 第十二次更新 / Twelfth Session
+- **fix**: 修复拖拽导入时对 `File.path` 的单点依赖，补充拖拽路径读取兜底逻辑，降低文件拖入后“解析失败”的问题。
+- **fix**: 当无法读取拖入文件路径时，前端会直接提示用户从 Finder 拖入本地文件，而不是继续进入无效解析流程。
+- **fix**: 优化搜索失败时的前端错误展示，尽量透传主进程返回的真实错误信息。
+- **fix**: 对空知识库场景提供更明确提示，引导用户先拖拽文档建立知识库。
+- **fix**: Fixed the drag-and-drop flow by reducing reliance on `File.path` alone and adding fallback path extraction for dropped files.
+- **fix**: Added clearer frontend feedback when a dropped file path cannot be resolved, prompting users to drag local files from Finder.
+- **fix**: Improved search error handling so the renderer shows more specific main-process error messages instead of a generic failure.
+- **fix**: Added a clearer empty-knowledge-base hint to guide users to ingest documents before searching.
 
 #### 第十一次更新 / Eleventh Session
 - **feat**: 完成主页面与搜索页面的 Liquid Glass 风格重构，统一玻璃拟态层次、模糊、半透明渐变和状态反馈体验。

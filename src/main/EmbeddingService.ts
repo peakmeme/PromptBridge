@@ -1,9 +1,18 @@
 import path from 'path';
+import { app } from 'electron';
 
 export class EmbeddingService {
   private extractor: any = null;
   private pipelineFunc: any = null;
   private readonly modelId = 'Xenova/bge-small-zh-v1.5';
+
+  private getLocalModelPath(): string {
+    if (app.isPackaged) {
+      return path.join(process.resourcesPath, 'assets', 'models');
+    }
+
+    return path.join(process.cwd(), 'assets/models');
+  }
 
   async init() {
     if (this.extractor) return;
@@ -11,12 +20,10 @@ export class EmbeddingService {
     try {
       console.log(`[EmbeddingService] 正在从本地加载模型: ${this.modelId}`);
       
-      // 动态导入 ESM 模块
       const { pipeline, env } = await import('@xenova/transformers');
       this.pipelineFunc = pipeline;
 
-      // 配置 transformers.js 使用本地模型，严禁联网
-      env.localModelPath = path.join(process.cwd(), 'assets/models');
+      env.localModelPath = this.getLocalModelPath();
       env.allowRemoteModels = false;
       env.allowLocalModels = true;
       env.useBrowserCache = false;
@@ -41,7 +48,6 @@ export class EmbeddingService {
       normalize: true,
     });
 
-    // 转换为 Float32Array 向量
     return new Float32Array(output.data);
   }
 }

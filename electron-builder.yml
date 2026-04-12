@@ -1,19 +1,26 @@
-# See https://www.electron.build/configuration/configuration
 appId: com.electron.peakmeme
 productName: peakmeme
 directories:
   output: dist
-  buildResources: build
+  buildResources: resources
 files:
   - out/**/*
-  - resources/**/*
-  - src/renderer/index.html
+  - node_modules/**/*
 extraResources:
-  - resources/**
+  - from: assets/models
+    to: assets/models
+    filter:
+      - '**/*'
+asarUnpack:
+  - node_modules/onnxruntime-node/**/*
 mac:
   target:
-    - dmgs
+    - target: dmg
+      arch:
+        - arm64
   icon: resources/icon.png
+  category: public.app-category.productivity
+  hardenedRuntime: false
 win:
   target:
     - nsis
@@ -22,3 +29,5 @@ linux:
   target:
     - AppImage
   icon: resources/icon.png
+npmRebuild: false
+nodeGypRebuild: false

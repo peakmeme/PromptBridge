@@ -348,35 +348,44 @@ const styles = {
     fontSize: '12px',
     fontWeight: 600 as const,
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
     border: '1px solid rgba(255,255,255,0.36)',
-    userSelect: 'none' as const,
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.42)'
+    userSelect: 'none' as const
   }
 };
 
-function App() {
-  const [isDragging, setIsDragging] = useState(false);
-  const [status, setStatus] = useState<string>('等待拖入文件...');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [indexedFiles, setIndexedFiles] = useState<string[]>([]);
+type IndexedFile = string;
+
+type DropFile = File & {
+  path?: string;
+};
+
+function App(): JSX.Element {
+  const [indexedFiles, setIndexedFiles] = useState<IndexedFile[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
-  const [dbPath, setDbPath] = useState<string>('');
+  const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [status, setStatus] = useState('将文件拖放到这里');
+  const [dbPath, setDbPath] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isCopied, setIsCopied] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hasTyped, setHasTyped] = useState(false);
+  const emptyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const emptyTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isSearchMode = new URLSearchParams(window.location.search).get('mode') === 'search';
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const isSearchMode = urlParams.get('mode') === 'search';
+  const showError = useCallback((message: string) => {
+    setErrorMessage(message);
+    if (errorTimerRef.current) {
+      clearTimeout(errorTimerRef.current);
+    }
+    errorTimerRef.current = setTimeout(() => {
+      setErrorMessage('');
+    }, 2400);
+  }, []);
 
   const fetchFiles = useCallback(async () => {
     try {
@@ -393,32 +402,39 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!isSearchMode) {
-      fetchFiles();
-    }
-  }, [isSearchMode, fetchFiles]);
+    fetchFiles();
+  }, [fetchFiles]);
+
+  useEffect(() => {
+    return () => {
+      if (emptyTimerRef.current) {
+        clearTimeout(emptyTimerRef.current);
+      }
+      if (errorTimerRef.current) {
+        clearTimeout(errorTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') {
+    if (e.key !== 'Enter' || !searchQuery.trim() || isSearching) {
       return;
     }
 
-    const query = searchQuery.trim();
-    if (!query || isSearching) {
-      return;
-    }
+    setIsSearching(true);
+    setSearchResult('');
+    setErrorMessage('');
 
     try {
-      setIsSearching(true);
-      setErrorMessage(null);
-      setSearchResult('');
-      const result = await (window as any).api.searchKnowledge(query);
-      setSearchResult(result || '未找到相关结果');
-    } catch (error) {
+      const result = await (window as any).api.searchKnowledge(searchQuery.trim());
+      setSearchResult(result);
+    } catch (error: any) {
       console.error('搜索失败:', error);
-      const message = typeof error === 'string' ? error : '搜索失败，请稍后再试';
-      setErrorMessage(message);
-      setSearchResult('');
+      const rawMessage = typeof error === 'string' ? error : error?.message || '搜索失败，请稍后再试';
+      const message = rawMessage.includes('DATABASE_EMPTY')
+        ? '知识库为空，请先拖入文档建立知识库。'
+        : rawMessage;
+      showError(message);
     } finally {
       setIsSearching(false);
     }
@@ -432,60 +448,11 @@ function App() {
     try {
       await navigator.clipboard.writeText(searchResult);
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 1600);
+      setTimeout(() => setIsCopied(false), 1500);
     } catch (error) {
       console.error('复制失败:', error);
     }
   };
-
-  const resetHideTimer = useCallback((delay: number) => {
-    if (!isSearchMode) {
-      return;
-    }
-
-    if (idleTimerRef.current) {
-      clearTimeout(idleTimerRef.current);
-    }
-
-    idleTimerRef.current = setTimeout(() => {
-      (window as any).api.hideSearchWindow();
-    }, delay);
-  }, [isSearchMode]);
-
-  useEffect(() => {
-    if (!isSearchMode) {
-      return;
-    }
-
-    resetHideTimer(10000);
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        (window as any).api.hideSearchWindow();
-      } else {
-        resetHideTimer(10000);
-      }
-    };
-
-    const handleMouseMove = () => resetHideTimer(10000);
-    const handleMouseDown = () => resetHideTimer(10000);
-    const handleBlur = () => (window as any).api.hideSearchWindow();
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('blur', handleBlur);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('blur', handleBlur);
-      if (idleTimerRef.current) {
-        clearTimeout(idleTimerRef.current);
-      }
-    };
-  }, [isSearchMode, resetHideTimer]);
 
   useEffect(() => {
     if (!isSearchMode) {
@@ -494,7 +461,6 @@ function App() {
 
     if (emptyTimerRef.current) {
       clearTimeout(emptyTimerRef.current);
-      emptyTimerRef.current = null;
     }
 
     if (hasTyped && searchQuery.trim() === '') {
@@ -552,6 +518,25 @@ function App() {
     setIsDragging(false);
   };
 
+  const getDroppedFilePath = (e: React.DragEvent<HTMLDivElement>, index: number): string | null => {
+    const item = e.dataTransfer.items[index];
+    const file = e.dataTransfer.files[index] as DropFile | undefined;
+    const filePath = typeof file?.path === 'string' && file.path.trim() !== '' ? file.path : null;
+
+    if (filePath) {
+      return filePath;
+    }
+
+    const webkitEntry = item?.webkitGetAsEntry?.();
+    const entryPath = webkitEntry && 'fullPath' in webkitEntry ? webkitEntry.fullPath : null;
+
+    if (typeof entryPath === 'string' && entryPath.trim() !== '') {
+      return entryPath;
+    }
+
+    return null;
+  };
+
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
@@ -560,24 +545,36 @@ function App() {
       return;
     }
 
-    const files = Array.from(e.dataTransfer.files);
+    const files = Array.from(e.dataTransfer.files) as DropFile[];
     if (files.length === 0) {
       return;
     }
 
+    const droppedFilePaths = files
+      .map((file, index) => ({ file, filePath: getDroppedFilePath(e, index) }))
+      .filter((item): item is { file: DropFile; filePath: string } => Boolean(item.filePath));
+
+    if (droppedFilePaths.length === 0) {
+      setStatus('未能读取拖入文件路径，请直接从 Finder 拖入本地文件');
+      showError('拖拽文件路径读取失败');
+      return;
+    }
+
     setIsProcessing(true);
-    setStatus(`正在处理 ${files.length} 个文件...`);
+    setStatus(`正在处理 ${droppedFilePaths.length} 个文件...`);
 
     try {
-      for (const file of files) {
+      for (const { file, filePath } of droppedFilePaths) {
         setStatus(`正在处理: ${file.name}`);
-        await (window as any).api.processFile(file.path);
+        await (window as any).api.processFile(filePath);
       }
-      setStatus(`处理完成，共导入 ${files.length} 个文件`);
+      setStatus(`处理完成，共导入 ${droppedFilePaths.length} 个文件`);
       await fetchFiles();
-    } catch (error) {
+    } catch (error: any) {
       console.error('文件处理失败:', error);
-      setStatus('处理失败，请查看控制台日志');
+      const message = typeof error === 'string' ? error : error?.message || '文件解析失败';
+      setStatus(message);
+      showError(message);
     } finally {
       setIsProcessing(false);
     }
@@ -782,78 +779,72 @@ function App() {
         <div style={{ ...styles.glassPanel, ...styles.sectionCard }}>
           <div style={styles.fileHeader}>
             <div>
-              <h2 style={styles.sectionTitle}>已索引文件</h2>
-              <div style={styles.sectionMeta}>统一管理已进入知识库的文档记录。</div>
+              <h2 style={styles.sectionTitle}>已入库文件</h2>
+              <div style={styles.sectionMeta}>可批量选择后删除，支持复制文件路径查看来源。</div>
             </div>
 
-            <button
-              type="button"
-              onClick={handleDeleteSelected}
-              disabled={selectedFiles.size === 0}
-              style={{
-                ...styles.actionButton,
-                opacity: selectedFiles.size === 0 ? 0.5 : 1,
-                cursor: selectedFiles.size === 0 ? 'not-allowed' : 'pointer'
-              }}
-            >
-              删除所选
-            </button>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <button type="button" onClick={toggleAllSelection} style={styles.actionButton}>
+                {selectedFiles.size === indexedFiles.length && indexedFiles.length > 0 ? '取消全选' : '全选'}
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteSelected}
+                style={{
+                  ...styles.actionButton,
+                  opacity: selectedFiles.size === 0 ? 0.55 : 1,
+                  cursor: selectedFiles.size === 0 ? 'not-allowed' : 'pointer'
+                }}
+                disabled={selectedFiles.size === 0}
+              >
+                删除所选
+              </button>
+            </div>
           </div>
 
           <div style={styles.fileTable}>
             <div style={styles.fileTableHeader}>
-              <div style={{ textAlign: 'center' }}>
-                <input
-                  type="checkbox"
-                  checked={indexedFiles.length > 0 && selectedFiles.size === indexedFiles.length}
-                  onChange={toggleAllSelection}
-                />
-              </div>
+              <div />
               <div>文件名</div>
-              <div>存储位置</div>
-              <div style={{ textAlign: 'center' }}>操作</div>
+              <div>完整路径</div>
+              <div>操作</div>
             </div>
 
             <div style={styles.fileTableBody}>
               {indexedFiles.length === 0 ? (
-                <div style={{ padding: '26px', textAlign: 'center', color: 'rgba(49, 85, 126, 0.7)' }}>
-                  暂无索引文件，请先拖入文档。
+                <div style={{ padding: '24px 16px', color: 'rgba(49, 85, 126, 0.76)', fontSize: '13px' }}>
+                  暂无已入库文件，拖入文档后会显示在这里。
                 </div>
               ) : (
-                indexedFiles.map((path) => {
-                  const fileName = path.split('/').pop() || path.split('\\').pop() || path;
+                indexedFiles.map((filePath) => {
+                  const fileName = filePath.split('/').pop() || filePath;
+                  const isSelected = selectedFiles.has(filePath);
+
                   return (
-                    <div key={path} style={styles.fileRow}>
-                      <div style={{ textAlign: 'center' }}>
+                    <div key={filePath} style={styles.fileRow}>
+                      <div>
                         <input
                           type="checkbox"
-                          checked={selectedFiles.has(path)}
-                          onChange={() => toggleFileSelection(path)}
+                          checked={isSelected}
+                          onChange={() => toggleFileSelection(filePath)}
                         />
                       </div>
-                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fileName}</div>
+                      <div style={{ fontWeight: 600 }}>{fileName}</div>
                       <div
+                        onClick={() => handleCopyPath(filePath)}
                         style={{
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
-                          color: 'rgba(49, 85, 126, 0.76)',
-                          cursor: 'pointer'
+                          cursor: 'copy',
+                          color: '#31557e'
                         }}
-                        onClick={() => handleCopyPath(path)}
-                        title="点击复制路径"
+                        title="点击复制完整路径"
                       >
-                        {path}
+                        {filePath}
                       </div>
-                      <div style={{ textAlign: 'center' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteSingle(path)}
-                          style={{
-                            ...styles.actionButton,
-                            padding: '7px 12px'
-                          }}
-                        >
+                      <div>
+                        <button type="button" onClick={() => handleDeleteSingle(filePath)} style={styles.actionButton}>
                           删除
                         </button>
                       </div>
